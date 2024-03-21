@@ -142,11 +142,11 @@ A: There are no invalid / irrelevant criteria.
 
 | criterion           | estimated weight |
 |---------------------|--------|
-| price               | 10     |
-| critic_score        | 6      |
-| user_score          | 7      |
+| price               | 6      |
+| critic_score        | 7      |
+| user_score          | 10     |
 | length              | 3      |
-| genres              | 5      |
+| genres              | 8      |
 | num_of_achievements | 2      |
 
 10. Are there dominated alternatives among the considered data set? If so, present all of them (dominating and dominated alternative), giving their names and values on the individual criteria.
