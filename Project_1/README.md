@@ -123,7 +123,7 @@ A: 6 criteria were considered. More of them could be created based on the data s
 A: The price, scores, length and number of achievements are parameters of the datasets, genres was created by collecting information from the dataset and turning them into a numerical value based on decision maker's preference.
 
 8. What are the domains of the individual criteria (discrete / continuous)? Note: in the case of continuous domains, specify the range of the criterion’s variability, in the case of others: list the values. What is the nature (gain / cost) of the individual criteria?
-
+ 
 A: 
 - price - cost - discrete - range: 20-250, integer value
 - critic_score - gain - discrete - range: 65-96, integer value
