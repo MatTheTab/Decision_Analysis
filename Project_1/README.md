@@ -107,31 +107,47 @@ A: Customer looking for a good, long but cheap game with an additional preferenc
 
 4. What is the number of alternatives considered? Were there more of them in the original data set?
 
-A: 
+A: 25 selected alternatives were considered. Some were chosen pseudo-randomly from the featured page, some from action-tagged featured page and some from the middle/lower part of action-tagged ratings sorted set. The original data set is much much larger.
 
 5. Describe one of the alternatives considered (give its name, evaluations, specify preferences for this
 alternative)
 
-A: 
+A: name: Dark Souls: Remastered, price: 150zł, critic_score: 84, user_score: 83, length: 44h, genres: 11, num_of_achievements: 41. This game is expected to be a good or very good choice, the price is rather high however the scores, length and number of achievements are above average and the genres points are very high.
 
 6. What is the number of criteria considered? Were there more of them in the original data set?
 
-A: 
+A: 6 criteria were considered. More of them could be created based on the data set.
 
 7. What is the origin of the various criteria? (catalog parameter / created by the decision maker - how?)
 
-A: 
+A: The price, scores, length and number of achievements are parameters of the datasets, genres was created by collecting information from the dataset and turning them into a numerical value based on decision maker's preference.
 
 8. What are the domains of the individual criteria (discrete / continuous)? Note: in the case of continuous domains, specify the range of the criterion’s variability, in the case of others: list the values. What is the nature (gain / cost) of the individual criteria?
 
 A: 
+- price - cost - discrete - range: 20-250, integer value
+- critic_score - gain - discrete - range: 65-96, integer value
+- user_score - gain - discrete - range: 31-91, integer value
+- length - gain - discrete - range: 4-114, integer value
+- genres - gain - discrete - range: 2-11, integer value derived from objects
+- num_of_achievements - gain - discrete - range: 14-204, integer value
 
 9. Are all criteria of equal importance (should they have the same ”weights”)? If not, can the relative
 importance of the criteria under consideration be expressed in terms of weights? In this case, estimate
 the weights of each criterion on a scale of 1 to 10. Are there any criteria among the criteria that are
 completely or almost invalid / irrelevant?
 
-A: 
+A: There are no invalid / irrelevant criteria.
+
+
+| criterion           | estimated weight |
+|---------------------|--------|
+| price               | 10     |
+| critic_score        | 6      |
+| user_score          | 7      |
+| length              | 3      |
+| genres              | 5      |
+| num_of_achievements | 2      |
 
 10. Are there dominated alternatives among the considered data set? If so, present all of them (dominating and dominated alternative), giving their names and values on the individual criteria.
 
