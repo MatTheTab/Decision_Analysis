@@ -191,6 +191,21 @@ A:
 1. Write the preferential information you provided at the input of the method.
 
 A:
+#### Classes:
+- Very promising
+- Worth considering
+- Not preferrable
+- Unacceptable
+
+#### Boundary profiles:
+
+| name    | price | critic_score | user_score | length | genres   | num_of_achievements |
+|---------|-------|--------------|------------|--------|----------|---------------------|
+| b_0     | 250   | 50           | 31         | 20     | 0        | 5                   |
+| b_1     | 200   | 67           | 50         | 50     | 3        | 20                  |
+| b_2     | 140   | 75           | 73         | 70     | 5        | 50                  |
+| b_3     | 90    | 88           | 83         | 85     | 7        | 100                 |
+| b_4     | 20    | 96           | 91         | 114    | 11       | 204                 |
 
 2. Enter the final result obtained with the method. Usually, the first result is not the final one, you can slightly adjust the parameter values to your preferences.
 
