@@ -26,17 +26,17 @@ For each model: <br>
 3. Explain the predictions for these objects using at least one technique ([Anchors](https://github.com/marcotcr/anchor) [LIME](https://lime-ml.readthedocs.io/en/latest/), [SHAP](https://shap-lrjball.readthedocs.io/en/docs_update/index.html), ... ) <br>
 
 ### 2.2 Interpretation of the model
-• Based on the parameters obtained, can we say something about the user’s preferences?
-• What was the influence of the criteria? Are there any criteria that have no effect, or have a decisive influence?
-• Are there any dependencies between the criteria?
-• What is the nature of the criterion, gain, cost, non-monotonic?
-• Whether there are any preference thresholds? Are there any evaluations on criteria that are indifferent in terms of preferences?
-• Interpret the model by at least one ([Global Surrogate](https://christophm.github.io/interpretable-ml-book/global.html), [Partial Dependence Plot](https://scikit-learn.org/stable/modules/generated/sklearn.inspection.PartialDependenceDisplay.html) [Permutation Feature Importance](https://scikit-learn.org/stable/modules/generated/sklearn.inspection.permutation_importance.html#sklearn.inspection.permutation_importance) ...)
+• Based on the parameters obtained, can we say something about the user’s preferences? <br>
+• What was the influence of the criteria? Are there any criteria that have no effect, or have a decisive influence? <br>
+• Are there any dependencies between the criteria? <br>
+• What is the nature of the criterion, gain, cost, non-monotonic? <br>
+• Whether there are any preference thresholds? Are there any evaluations on criteria that are indifferent in terms of preferences? <br>
+• Interpret the model by at least one ([Global Surrogate](https://christophm.github.io/interpretable-ml-book/global.html), [Partial Dependence Plot](https://scikit-learn.org/stable/modules/generated/sklearn.inspection.PartialDependenceDisplay.html), [Permutation Feature Importance](https://scikit-learn.org/stable/modules/generated/sklearn.inspection.permutation_importance.html#sklearn.inspection.permutation_importance) ...)
 
 ### A list of tools that contain various techniques for explaining and interpreting the model:
-• [Shapash](https://shapash.readthedocs.io/en/latest/)
-• [Alibi](https://github.com/SeldonIO/alibi)
-• [Explainerdashboard](https://explainerdashboard.readthedocs.io/en/latest/)
-• [DALEX](https://github.com/ModelOriented/DALEX)
-• [eli5](https://eli5.readthedocs.io/en/latest/overview.html)
+• [Shapash](https://shapash.readthedocs.io/en/latest/) <br>
+• [Alibi](https://github.com/SeldonIO/alibi) <br>
+• [Explainerdashboard](https://explainerdashboard.readthedocs.io/en/latest/) <br>
+• [DALEX](https://github.com/ModelOriented/DALEX) <br>
+• [eli5](https://eli5.readthedocs.io/en/latest/overview.html) <br>
 • [aix360](https://github.com/Trusted-AI/AIX360)
