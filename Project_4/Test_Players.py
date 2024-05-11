@@ -433,3 +433,259 @@ class Dabbler_Collector(Player):
         if num_cards == 4:
             return True
         return False
+
+class Coin_Flipper_Believer(Player):
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        true_card = random.choice(self.cards)
+        called_card = true_card
+        cheat = np.random.choice([False, True])
+        if cheat:
+            called_card = random.choice(self.cards)             
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        return False
+    
+class Coin_Flipper_Once_in_a_While(Player):
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        true_card = random.choice(self.cards)
+        called_card = true_card
+        cheat = np.random.choice([False, True])
+        if cheat:
+            called_card = random.choice(self.cards)             
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        number = np.random.randint(0, 10)
+        if number == 0:
+            return True
+        return False
+    
+class Coin_Flipper_Two_Face(Player):
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        true_card = random.choice(self.cards)
+        called_card = true_card
+        cheat = np.random.choice([False, True])
+        if cheat:
+            called_card = random.choice(self.cards)             
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        return np.random.choice([False, True])
+    
+class Coin_Flipper_Accountant(Player):
+    def __init__(self, name):
+        super().__init__(name)
+        self.prob_call = 0.5
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        true_card = random.choice(self.cards)
+        called_card = true_card
+        cheat = np.random.choice([False, True])
+        if cheat:
+            called_card = random.choice(self.cards)             
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        random_float = np.random.rand()
+        if random_float <= self.prob_call:
+            return True
+        return False
+    
+    def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log = True):
+        if iChecked and iDrewCards:
+            self.prob_call /= 2
+        elif iChecked and not iDrewCards:
+            self.prob_call *= 2
+            if self.prob_call > 1.0:
+                self.prob_call = 1.0
+
+class Coin_Flipper_Nervous(Player):
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        true_card = random.choice(self.cards)
+        called_card = true_card
+        cheat = np.random.choice([False, True])
+        if cheat:
+            called_card = random.choice(self.cards)             
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        available_cards = sorted(self.cards, key=lambda x: x[0])
+        if available_cards[-1][0] < opponent_declaration[0]:
+            return True
+        return False
+    
+class Coin_Flipper_Collector(Player):
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        true_card = random.choice(self.cards)
+        called_card = true_card
+        cheat = np.random.choice([False, True])
+        if cheat:
+            called_card = random.choice(self.cards)             
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        num_cards = 1
+        for card in self.cards:
+            if card[0] == opponent_declaration[0]:
+                num_cards += 1
+        if num_cards == 4:
+            return True
+        return False
+
+class Pathological_Believer(Player):
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        true_card = random.choice(self.cards)
+        called_card = true_card
+        cheat = True
+        if cheat:
+            called_card = random.choice(self.cards)             
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        return False
+    
+class Pathological_Once_in_a_While(Player):
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        true_card = random.choice(self.cards)
+        called_card = true_card
+        cheat = True
+        if cheat:
+            called_card = random.choice(self.cards)             
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        number = np.random.randint(0, 10)
+        if number == 0:
+            return True
+        return False
+    
+class Pathological_Two_Face(Player):
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        true_card = random.choice(self.cards)
+        called_card = true_card
+        cheat = True
+        if cheat:
+            called_card = random.choice(self.cards)             
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        return np.random.choice([False, True])
+    
+class Pathological_Accountant(Player):
+    def __init__(self, name):
+        super().__init__(name)
+        self.prob_call = 0.5
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        true_card = random.choice(self.cards)
+        called_card = true_card
+        cheat = True
+        if cheat:
+            called_card = random.choice(self.cards)             
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        random_float = np.random.rand()
+        if random_float <= self.prob_call:
+            return True
+        return False
+    
+    def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log = True):
+        if iChecked and iDrewCards:
+            self.prob_call /= 2
+        elif iChecked and not iDrewCards:
+            self.prob_call *= 2
+            if self.prob_call > 1.0:
+                self.prob_call = 1.0
+
+class Pathological_Nervous(Player):
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        true_card = random.choice(self.cards)
+        called_card = true_card
+        cheat = True
+        if cheat:
+            called_card = random.choice(self.cards)             
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        available_cards = sorted(self.cards, key=lambda x: x[0])
+        if available_cards[-1][0] < opponent_declaration[0]:
+            return True
+        return False
+    
+class Pathological_Collector(Player):
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        true_card = random.choice(self.cards)
+        called_card = true_card
+        cheat = True
+        if cheat:
+            called_card = random.choice(self.cards)             
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        num_cards = 1
+        for card in self.cards:
+            if card[0] == opponent_declaration[0]:
+                num_cards += 1
+        if num_cards == 4:
+            return True
+        return False
