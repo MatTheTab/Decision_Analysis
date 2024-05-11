@@ -689,3 +689,251 @@ class Pathological_Collector(Player):
         if num_cards == 4:
             return True
         return False
+    
+class Pusher_Believer(Player):
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        card_counts = {item[0]: sum(1 for tup in self.cards if tup[0] == item[0]) for item in self.cards}
+        cheat = False
+        for key in card_counts:
+            if card_counts[key] == 1:
+                cheat = True
+                break
+        if cheat:
+            called_card = random.choice(self.cards)
+            available_cards = self.cards
+            available_cards = sorted(available_cards, key=lambda x: x[0])
+            true_card = available_cards[0]
+        else:
+            available_cards = []
+            for card in self.cards:
+                if declared_card is None or card[0]>=declared_card[0]:
+                    available_cards.append(card)
+            available_cards = sorted(available_cards, key=lambda x: x[0])    
+            if len(available_cards) == 0:
+                called_card = random.choice(self.cards)
+                available_cards = self.cards
+                available_cards = sorted(available_cards, key=lambda x: x[0])
+                true_card = available_cards[0]
+            else:
+                true_card = available_cards[0]
+                called_card = true_card       
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        return False
+    
+class Pusher_Once_in_a_While(Player):
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        card_counts = {item[0]: sum(1 for tup in self.cards if tup[0] == item[0]) for item in self.cards}
+        cheat = False
+        for key in card_counts:
+            if card_counts[key] == 1:
+                cheat = True
+                break
+        if cheat:
+            called_card = random.choice(self.cards)
+            available_cards = self.cards
+            available_cards = sorted(available_cards, key=lambda x: x[0])
+            true_card = available_cards[0]
+        else:
+            available_cards = []
+            for card in self.cards:
+                if declared_card is None or card[0]>=declared_card[0]:
+                    available_cards.append(card)
+            available_cards = sorted(available_cards, key=lambda x: x[0])    
+            if len(available_cards) == 0:
+                called_card = random.choice(self.cards)
+                available_cards = self.cards
+                available_cards = sorted(available_cards, key=lambda x: x[0])
+                true_card = available_cards[0]
+            else:
+                true_card = available_cards[0]
+                called_card = true_card       
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        number = np.random.randint(0, 10)
+        if number == 0:
+            return True
+        return False
+    
+class Pusher_Two_Face(Player):
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        card_counts = {item[0]: sum(1 for tup in self.cards if tup[0] == item[0]) for item in self.cards}
+        cheat = False
+        for key in card_counts:
+            if card_counts[key] == 1:
+                cheat = True
+                break
+        if cheat:
+            called_card = random.choice(self.cards)
+            available_cards = self.cards
+            available_cards = sorted(available_cards, key=lambda x: x[0])
+            true_card = available_cards[0]
+        else:
+            available_cards = []
+            for card in self.cards:
+                if declared_card is None or card[0]>=declared_card[0]:
+                    available_cards.append(card)
+            available_cards = sorted(available_cards, key=lambda x: x[0])    
+            if len(available_cards) == 0:
+                called_card = random.choice(self.cards)
+                available_cards = self.cards
+                available_cards = sorted(available_cards, key=lambda x: x[0])
+                true_card = available_cards[0]
+            else:
+                true_card = available_cards[0]
+                called_card = true_card       
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        return np.random.choice([False, True])
+    
+class Pusher_Accountant(Player):
+    def __init__(self, name):
+        super().__init__(name)
+        self.prob_call = 0.5
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        card_counts = {item[0]: sum(1 for tup in self.cards if tup[0] == item[0]) for item in self.cards}
+        cheat = False
+        for key in card_counts:
+            if card_counts[key] == 1:
+                cheat = True
+                break
+        if cheat:
+            called_card = random.choice(self.cards)
+            available_cards = self.cards
+            available_cards = sorted(available_cards, key=lambda x: x[0])
+            true_card = available_cards[0]
+        else:
+            available_cards = []
+            for card in self.cards:
+                if declared_card is None or card[0]>=declared_card[0]:
+                    available_cards.append(card)
+            available_cards = sorted(available_cards, key=lambda x: x[0])    
+            if len(available_cards) == 0:
+                called_card = random.choice(self.cards)
+                available_cards = self.cards
+                available_cards = sorted(available_cards, key=lambda x: x[0])
+                true_card = available_cards[0]
+            else:
+                true_card = available_cards[0]
+                called_card = true_card       
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        random_float = np.random.rand()
+        if random_float <= self.prob_call:
+            return True
+        return False
+    
+    def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log = True):
+        if iChecked and iDrewCards:
+            self.prob_call /= 2
+        elif iChecked and not iDrewCards:
+            self.prob_call *= 2
+            if self.prob_call > 1.0:
+                self.prob_call = 1.0
+
+class Pusher_Nervous(Player):
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        card_counts = {item[0]: sum(1 for tup in self.cards if tup[0] == item[0]) for item in self.cards}
+        cheat = False
+        for key in card_counts:
+            if card_counts[key] == 1:
+                cheat = True
+                break
+        if cheat:
+            called_card = random.choice(self.cards)
+            available_cards = self.cards
+            available_cards = sorted(available_cards, key=lambda x: x[0])
+            true_card = available_cards[0]
+        else:
+            available_cards = []
+            for card in self.cards:
+                if declared_card is None or card[0]>=declared_card[0]:
+                    available_cards.append(card)
+            available_cards = sorted(available_cards, key=lambda x: x[0])    
+            if len(available_cards) == 0:
+                called_card = random.choice(self.cards)
+                available_cards = self.cards
+                available_cards = sorted(available_cards, key=lambda x: x[0])
+                true_card = available_cards[0]
+            else:
+                true_card = available_cards[0]
+                called_card = true_card       
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        available_cards = sorted(self.cards, key=lambda x: x[0])
+        if available_cards[-1][0] < opponent_declaration[0]:
+            return True
+        return False
+    
+class Pusher_Collector(Player):
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        card_counts = {item[0]: sum(1 for tup in self.cards if tup[0] == item[0]) for item in self.cards}
+        cheat = False
+        for key in card_counts:
+            if card_counts[key] == 1:
+                cheat = True
+                break
+        if cheat:
+            called_card = random.choice(self.cards)
+            available_cards = self.cards
+            available_cards = sorted(available_cards, key=lambda x: x[0])
+            true_card = available_cards[0]
+        else:
+            available_cards = []
+            for card in self.cards:
+                if declared_card is None or card[0]>=declared_card[0]:
+                    available_cards.append(card)
+            available_cards = sorted(available_cards, key=lambda x: x[0])    
+            if len(available_cards) == 0:
+                called_card = random.choice(self.cards)
+                available_cards = self.cards
+                available_cards = sorted(available_cards, key=lambda x: x[0])
+                true_card = available_cards[0]
+            else:
+                true_card = available_cards[0]
+                called_card = true_card       
+        if declared_card is not None and called_card[0] < declared_card[0]:
+            called_card = (min(declared_card[0]+1,14), called_card[1])
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        num_cards = 1
+        for card in self.cards:
+            if card[0] == opponent_declaration[0]:
+                num_cards += 1
+        if num_cards == 4:
+            return True
+        return False
