@@ -1,6 +1,7 @@
 import numpy as np
 from player import Player
 import random
+from collections import deque
 
 class MyRandom_Default(Player):
     
@@ -937,3 +938,403 @@ class Pusher_Collector(Player):
         if num_cards == 4:
             return True
         return False
+    
+class Saint_Sceptic_Adaptable_Naive(Player):
+    def __init__(self, name):
+        super().__init__(name)
+        self.prob_threshold = 0.75
+        self.game_started = True
+        self.opponents_cards = None
+        self.heap = None
+        self.last_played = None
+        self.I_played_first = None
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            self.last_played = None
+            return "draw"
+        
+        if self.game_started:
+            self.game_started = False
+            num_repeats = len(self.cards)
+            if declared_card is not None:
+                num_repeats -= 1
+                self.I_played_first = False
+            else:
+                self.I_played_first = True 
+            self.opponents_cards = ["Uknown" for i in range(num_repeats)]
+            self.heap = ["Uknown" for i in range(24 - num_repeats - len(self.cards))]
+
+        available_cards = []
+        for card in self.cards:
+            if declared_card is None or card[0] >= declared_card[0]:
+                available_cards.append(card)
+        available_cards = sorted(available_cards, key=lambda x: x[0])
+        if len(available_cards) > 0:
+            true_card = available_cards[0]
+            called_card = available_cards[0]
+        else:
+            available_cards = self.cards
+            available_cards = sorted(available_cards, key=lambda x: x[0])
+            true_card = available_cards[0]
+            if declared_card[0] == 14:
+                called_card = (14, np.random.randint(0, 4))
+            else:
+                called_card = (np.random.randint(declared_card[0], 15), np.random.randint(0, 4))
+        self.last_played = true_card
+        return true_card, called_card
+    
+    def get_probs(self, opponent_declaration):
+        if opponent_declaration in self.cards:
+            return 1.0
+        else:
+            all_cards = [(number, color) for color in range(4) for number in range(9, 15)]
+            fullfilled_condition_cards = []
+            not_fullfilled = []
+            for card in all_cards:
+                if card not in self.cards:
+                    if card[0]>= opponent_declaration[0]:
+                        fullfilled_condition_cards.append(card)
+                    else:
+                        not_fullfilled.append(card)
+            predicted_prob = 1.0
+            for i in range(len(self.cards)):
+                predicted_prob *= len(not_fullfilled)/(len(not_fullfilled) + len(fullfilled_condition_cards))
+            return 1.0 - predicted_prob
+        
+    def checkCard(self, opponent_declaration):
+        probability_cheating = self.get_probs(opponent_declaration)
+        if probability_cheating > self.prob_threshold:
+            return True
+        return False
+        
+    def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log = True):
+        if iChecked and iDrewCards:
+            self.prob_threshold *= 2
+            if self.prob_threshold>1:
+                self.prob_threshold = 1.0
+        elif iChecked and not iDrewCards:
+            self.prob_threshold /= 2
+
+class Saint_Sceptic_75_Naive(Player):
+    def __init__(self, name):
+        super().__init__(name)
+        self.prob_threshold = 0.75
+        self.game_started = True
+        self.opponents_cards = None
+        self.heap = None
+        self.last_played = None
+        self.I_played_first = None
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            self.last_played = None
+            return "draw"
+        
+        if self.game_started:
+            self.game_started = False
+            num_repeats = len(self.cards)
+            if declared_card is not None:
+                num_repeats -= 1
+                self.I_played_first = False
+            else:
+                self.I_played_first = True 
+            self.opponents_cards = ["Uknown" for i in range(num_repeats)]
+            self.heap = ["Uknown" for i in range(24 - num_repeats - len(self.cards))]
+
+        available_cards = []
+        for card in self.cards:
+            if declared_card is None or card[0] >= declared_card[0]:
+                available_cards.append(card)
+        available_cards = sorted(available_cards, key=lambda x: x[0])
+        if len(available_cards) > 0:
+            true_card = available_cards[0]
+            called_card = available_cards[0]
+        else:
+            available_cards = self.cards
+            available_cards = sorted(available_cards, key=lambda x: x[0])
+            true_card = available_cards[0]
+            if declared_card[0] == 14:
+                called_card = (14, np.random.randint(0, 4))
+            else:
+                called_card = (np.random.randint(declared_card[0], 15), np.random.randint(0, 4))
+        self.last_played = true_card
+        return true_card, called_card
+    
+    def get_probs(self, opponent_declaration):
+        if opponent_declaration in self.cards:
+            return 1.0
+        else:
+            all_cards = [(number, color) for color in range(4) for number in range(9, 15)]
+            fullfilled_condition_cards = []
+            not_fullfilled = []
+            for card in all_cards:
+                if card not in self.cards:
+                    if card[0]>= opponent_declaration[0]:
+                        fullfilled_condition_cards.append(card)
+                    else:
+                        not_fullfilled.append(card)
+            predicted_prob = 1.0
+            for i in range(len(self.cards)):
+                predicted_prob *= len(not_fullfilled)/(len(not_fullfilled) + len(fullfilled_condition_cards))
+            return 1.0 - predicted_prob
+        
+    def checkCard(self, opponent_declaration):
+        probability_cheating = self.get_probs(opponent_declaration)
+        if probability_cheating > self.prob_threshold:
+            return True
+        return False
+        
+class Saint_Sceptic_50_Naive(Player):
+    def __init__(self, name):
+        super().__init__(name)
+        self.prob_threshold = 0.5
+        self.game_started = True
+        self.opponents_cards = None
+        self.heap = None
+        self.last_played = None
+        self.I_played_first = None
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            self.last_played = None
+            return "draw"
+        
+        if self.game_started:
+            self.game_started = False
+            num_repeats = len(self.cards)
+            if declared_card is not None:
+                num_repeats -= 1
+                self.I_played_first = False
+            else:
+                self.I_played_first = True 
+            self.opponents_cards = ["Uknown" for i in range(num_repeats)]
+            self.heap = ["Uknown" for i in range(24 - num_repeats - len(self.cards))]
+
+        available_cards = []
+        for card in self.cards:
+            if declared_card is None or card[0] >= declared_card[0]:
+                available_cards.append(card)
+        available_cards = sorted(available_cards, key=lambda x: x[0])
+        if len(available_cards) > 0:
+            true_card = available_cards[0]
+            called_card = available_cards[0]
+        else:
+            available_cards = self.cards
+            available_cards = sorted(available_cards, key=lambda x: x[0])
+            true_card = available_cards[0]
+            if declared_card[0] == 14:
+                called_card = (14, np.random.randint(0, 4))
+            else:
+                called_card = (np.random.randint(declared_card[0], 15), np.random.randint(0, 4))
+        self.last_played = true_card
+        return true_card, called_card
+    
+    def get_probs(self, opponent_declaration):
+        if opponent_declaration in self.cards:
+            return 1.0
+        else:
+            all_cards = [(number, color) for color in range(4) for number in range(9, 15)]
+            fullfilled_condition_cards = []
+            not_fullfilled = []
+            for card in all_cards:
+                if card not in self.cards:
+                    if card[0]>= opponent_declaration[0]:
+                        fullfilled_condition_cards.append(card)
+                    else:
+                        not_fullfilled.append(card)
+            predicted_prob = 1.0
+            for i in range(len(self.cards)):
+                predicted_prob *= len(not_fullfilled)/(len(not_fullfilled) + len(fullfilled_condition_cards))
+            return 1.0 - predicted_prob
+        
+    def checkCard(self, opponent_declaration):
+        probability_cheating = self.get_probs(opponent_declaration)
+        if probability_cheating > self.prob_threshold:
+            return True
+        return False
+        
+class Saint_Sceptic_25_Naive(Player):
+    def __init__(self, name):
+        super().__init__(name)
+        self.prob_threshold = 0.25
+        self.game_started = True
+        self.opponents_cards = None
+        self.heap = None
+        self.last_played = None
+        self.I_played_first = None
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            self.last_played = None
+            return "draw"
+        
+        if self.game_started:
+            self.game_started = False
+            num_repeats = len(self.cards)
+            if declared_card is not None:
+                num_repeats -= 1
+                self.I_played_first = False
+            else:
+                self.I_played_first = True 
+            self.opponents_cards = ["Uknown" for i in range(num_repeats)]
+            self.heap = ["Uknown" for i in range(24 - num_repeats - len(self.cards))]
+
+        available_cards = []
+        for card in self.cards:
+            if declared_card is None or card[0] >= declared_card[0]:
+                available_cards.append(card)
+        available_cards = sorted(available_cards, key=lambda x: x[0])
+        if len(available_cards) > 0:
+            true_card = available_cards[0]
+            called_card = available_cards[0]
+        else:
+            available_cards = self.cards
+            available_cards = sorted(available_cards, key=lambda x: x[0])
+            true_card = available_cards[0]
+            if declared_card[0] == 14:
+                called_card = (14, np.random.randint(0, 4))
+            else:
+                called_card = (np.random.randint(declared_card[0], 15), np.random.randint(0, 4))
+        self.last_played = true_card
+        return true_card, called_card
+    
+    def get_probs(self, opponent_declaration):
+        if opponent_declaration in self.cards:
+            return 1.0
+        else:
+            all_cards = [(number, color) for color in range(4) for number in range(9, 15)]
+            fullfilled_condition_cards = []
+            not_fullfilled = []
+            for card in all_cards:
+                if card not in self.cards:
+                    if card[0]>= opponent_declaration[0]:
+                        fullfilled_condition_cards.append(card)
+                    else:
+                        not_fullfilled.append(card)
+            predicted_prob = 1.0
+            for i in range(len(self.cards)):
+                predicted_prob *= len(not_fullfilled)/(len(not_fullfilled) + len(fullfilled_condition_cards))
+            return 1.0 - predicted_prob
+        
+    def checkCard(self, opponent_declaration):
+        probability_cheating = self.get_probs(opponent_declaration)
+        if probability_cheating > self.prob_threshold:
+            return True
+        return False
+        
+class Saint_Nervous_ver_2(Player):
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        available_cards = []
+        for card in self.cards:
+            if declared_card is None or card[0] >= declared_card[0]:
+                available_cards.append(card)
+        available_cards = sorted(available_cards, key=lambda x: x[0])
+        if len(available_cards) > 0:
+            true_card = available_cards[0]
+            called_card = available_cards[0]
+        else:
+            available_cards = self.cards
+            available_cards = sorted(available_cards, key=lambda x: x[0])
+            true_card = available_cards[0]
+            if declared_card[0] == 14:
+                called_card = (14, np.random.randint(0, 4))
+            else:
+                called_card = (np.random.randint(declared_card[0], 15), np.random.randint(0, 4))
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        available_cards = sorted(self.cards, key=lambda x: x[0])
+        if (available_cards[-1][0] < opponent_declaration[0]) or (opponent_declaration in self.cards):
+            return True
+        return False
+    
+class Saint_Nervous_ver_3(Player):
+    def __init__(self, name):
+        super().__init__(name)
+        self.played_cards = []
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        available_cards = []
+        for card in self.cards:
+            if declared_card is None or card[0] >= declared_card[0]:
+                available_cards.append(card)
+        available_cards = sorted(available_cards, key=lambda x: x[0])
+        if len(available_cards) > 0:
+            true_card = available_cards[0]
+            called_card = available_cards[0]
+        else:
+            available_cards = self.cards
+            available_cards = sorted(available_cards, key=lambda x: x[0])
+            true_card = available_cards[0]
+            cards_to_call = self.played_cards
+            cards_to_call = sorted(cards_to_call, key=lambda x: x[0])
+            called_card = None
+            for card in cards_to_call:
+                if card[0] >= declared_card[0]:
+                    called_card = card
+                    break
+            if called_card is None:
+                called_card = (14, np.random.randint(0, 4))
+        self.played_cards.append(true_card)
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        available_cards = sorted(self.cards, key=lambda x: x[0])
+        if (available_cards[-1][0] < opponent_declaration[0]) or (opponent_declaration in self.cards):
+            return True
+        return False
+    
+    def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log = True):
+        if revealedCard is not None:
+            self.played_cards.append(revealedCard)
+
+class Saint_Nervous_Memory(Player):
+    def __init__(self, name):
+        super().__init__(name)
+        self.memory = deque(maxlen=3)
+        self.played_cards = []
+    
+    def putCard(self, declared_card):
+        if len(self.cards) == 1 and declared_card is not None and self.cards[0][0] < declared_card[0]:
+            return "draw"
+        available_cards = []
+        for card in self.cards:
+            if declared_card is None or card[0] >= declared_card[0]:
+                available_cards.append(card)
+        available_cards = sorted(available_cards, key=lambda x: x[0])
+        if len(available_cards) > 0:
+            true_card = available_cards[0]
+            called_card = available_cards[0]
+        else:
+            available_cards = self.cards
+            available_cards = sorted(available_cards, key=lambda x: x[0])
+            true_card = available_cards[0]
+            cards_to_call = self.played_cards
+            cards_to_call = sorted(cards_to_call, key=lambda x: x[0])
+            called_card = None
+            for card in cards_to_call:
+                if card[0] >= declared_card[0]:
+                    called_card = card
+                    break
+            if called_card is None:
+                called_card = (14, np.random.randint(0, 4))
+        self.played_cards.append(true_card)
+        self.memory.append(true_card)
+        return true_card, called_card
+    
+    def checkCard(self, opponent_declaration):
+        available_cards = sorted(self.cards, key=lambda x: x[0])
+        if (available_cards[-1][0] < opponent_declaration[0]) or (opponent_declaration in self.cards) or (opponent_declaration in self.memory):
+            return True
+        return False
+    
+    def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log = True):
+        if revealedCard is not None:
+            self.played_cards.append(revealedCard)
+            self.memory.append(revealedCard)
